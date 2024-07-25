@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet,  } from "react-native";
 import { router } from "expo-router";
 import {
   GestureHandlerRootView,
   TouchableHighlight,
 } from "react-native-gesture-handler";
+import { MenuIcon } from "./Icon";
 
 const Footer = ({dest, text} : any) => {
   const toggleModal = () => {
@@ -16,7 +17,7 @@ const Footer = ({dest, text} : any) => {
       <View style={styles.container}>
         <Text style={{ color: "white" }}>{text}</Text>
         <TouchableHighlight onPress={toggleModal}>
-          <Image source={require("@/assets/drawable-mdpi/menu.png")} />
+          <MenuIcon />
         </TouchableHighlight>
       </View>
       

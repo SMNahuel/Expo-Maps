@@ -7,13 +7,12 @@ import {
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import {View} from 'react-native'
+import { View } from "react-native";
 
 import "react-native-reanimated";
 
 // Hooks
 import { useColorScheme } from "@/hooks/useColorScheme";
-
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,9 +34,18 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{headerShown : false}}>
-      <Stack.Screen name="index" options={{ animation: 'slide_from_bottom' }} />
-      <Stack.Screen name="Home" options={{ animation: 'slide_from_bottom' ,header: () => <View>Hola</View>, }}   />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="index"
+          options={{ animation: "slide_from_bottom" }}
+        />
+        <Stack.Screen
+          name="list"
+          options={{
+            animation: "slide_from_bottom",
+            header: () => <View>Hola</View>,
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );

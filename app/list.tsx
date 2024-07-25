@@ -67,7 +67,7 @@ export default function HomeScreen() {
     init();
   }, []);
 
-  const onPress = (item : any) => {
+  const onPress = (item: any) => {
     setSelectedSite(item);
     setModalVisible(true);
   };
@@ -86,6 +86,7 @@ export default function HomeScreen() {
                     item={item}
                     onPress={onPress}
                     onSelect={setSelectedSite}
+                    key={item.id}
                   />
                 );
               }}
@@ -101,7 +102,12 @@ export default function HomeScreen() {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <ModalPois onRequestClose={() => setModalVisible(false)} selectedSite={selectedSite}/>
+        {selectedSite && (
+          <ModalPois
+            onRequestClose={() => setModalVisible(false)}
+            selectedSite={selectedSite}
+          />
+        )}
       </Modal>
     </>
   );
@@ -122,7 +128,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   containerItem: {
     backgroundColor: "white",

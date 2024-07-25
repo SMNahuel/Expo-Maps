@@ -1,21 +1,19 @@
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BackIcon, CalendarIcon, FilterIcon, NavigationIcon } from "./Icon";
 
 const Header = ({ pois_count, onPress }: any) => {
-  
   return (
     <GestureHandlerRootView style={{ height: "15%" }}>
       <View style={styles.containerFooter}>
         <View style={styles.rowContainerLeft}>
-          <Image source={require("@/assets/drawable-mdpi/back.png")} />
+          <BackIcon />
           <Text style={{ color: "white" }}>MADRID</Text>
         </View>
         <View style={styles.rowContainerRight}>
-          <Image
-            source={require("@/assets/drawable-mdpi/navigation_copy_2.png")}
-          />
-          <Image source={require("@/assets/drawable-mdpi/navigation.png")} />
+          <CalendarIcon />
+          <NavigationIcon />
         </View>
       </View>
       <View style={styles.container}>
@@ -24,9 +22,7 @@ const Header = ({ pois_count, onPress }: any) => {
           <Text style={{ color: "white" }}>{pois_count}</Text>
           <View style={styles.itemRow}>
             <TouchableOpacity onPress={onPress}>
-              <Image
-                source={require("@/assets/drawable-mdpi/navigation_copy_3.png")}
-              />
+              <FilterIcon />
             </TouchableOpacity>
           </View>
         </View>
@@ -47,7 +43,7 @@ const styles = StyleSheet.create({
   filterButton: {
     padding: 10,
     borderRadius: 5,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     elevation: 3,
   },
   containerFooter: {

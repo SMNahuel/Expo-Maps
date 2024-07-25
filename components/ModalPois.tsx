@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Button, Image } from "react-native";
 import { Audio as ExpoAudio } from "expo-av";
 import Slider from "@react-native-community/slider";
-import { Site } from "@/types/interface";
+import { Site, ImageInterface } from "@/types/interface";
+import PagerView from "react-native-pager-view";
+import { DinamicIcon } from "./Icon";
 
 interface ModalPoisProps {
-  site: Site;
+  site?: Site;
   onRequestClose: () => void;
   selectedSite: Site;
 }
@@ -80,14 +82,23 @@ const ModalPois: React.FC<ModalPoisProps> = ({
       <View style={styles.modalContent}>
         <View style={styles.modalHeader}>
           <View style={styles.modalHeader}>
-            <Image
-              source={{ uri: selectedSite.category.icon.url }}
-              style={styles.icon}
-            />
+            <DinamicIcon url={selectedSite.category.icon.url} />
             <Text style={styles.modalTitle}>{selectedSite.name}</Text>
           </View>
           <Button title="X" onPress={handleClose} />
         </View>
+        <PagerView style={styles.container} initialPage={0}>
+          {selectedSite.gallery_images.map(
+            (item: ImageInterface, index: number) => {
+              console.log(item.url);
+              return (
+                <View style={styles.page} key={index}>
+                  <Image style={styles.image} source={{ uri: item.url }} />
+                </View>
+              );
+            }
+          )}
+        </PagerView>
         {isPlaying ? (
           <Button title="Pausar Sonido" onPress={pauseSound} />
         ) : (
@@ -122,24 +133,34 @@ const ModalPois: React.FC<ModalPoisProps> = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    height: "40%",
+  },
+  page: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
   modalContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
   },
   modalContent: {
     width: "90%",
-    height : '90%',
+    height: "85%",
     backgroundColor: "white",
-    padding: 20,
+
     elevation: 5,
   },
   modalHeader: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    
+    padding: 5,
   },
   modalTitle: {
     fontWeight: "bold",

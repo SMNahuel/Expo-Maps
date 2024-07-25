@@ -41,6 +41,10 @@ export interface Audio {
   url: string;
 }
 
+export interface ImageInterface {
+  url: string;
+}
+
 export interface Site {
   id: number;
   name: string;
@@ -50,5 +54,9 @@ export interface Site {
   longitude: number;
   category: Category;
   audio: Audio;
-  images: string[];
+  gallery_images: ImageInterface[];
+}
+
+export interface DinamicIconProps {
+  url: string;
 }

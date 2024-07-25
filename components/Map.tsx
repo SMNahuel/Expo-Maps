@@ -67,16 +67,14 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
     return points.filter((point: any) => isPointInPolygon(point, polygon));
   };
 
-
   // Marker dentro del poligon
   const markersOutsidePolygon = getMarkersOutsidePolygon(
     coordinates.map((coord) => ({
       latitude: coord.latitude,
       longitude: coord.longitude,
     })),
-    marker.map((marker: any) => (marker))
+    marker.map((marker: any) => marker)
   );
-  
 
   const popularMarkers = marker.filter((item: any) => item.likes_count > 0);
 
@@ -106,26 +104,23 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
         fillColor="rgba(255, 0, 0, 0.5)" // Color de fondo con transparencia
         strokeWidth={0}
       />
+      
       <Polyline coordinates={coordinates} strokeColor="black" strokeWidth={1} />
       {markersOutsidePolygon.map((coord: any, index: number) => (
-        <>
-          <Marker
-            key={index}
-            coordinate={coord}
-            icon={coord.category.icon}
-            description={`${coord.description}`}
-            image={coord.category.marker.url}
-          >
-            <Callout>
-              <View>
-                <Text>{coord.name}</Text>
-                <Text style={styles.calloutDescription}>
-                  {coord.description}
-                </Text>
-              </View>
-            </Callout>
-          </Marker>
-        </>
+        <Marker
+          key={coord.id}
+          coordinate={coord}
+          icon={coord.category.icon}
+          description={`${coord.description}`}
+          image={coord.category.marker.url}
+        >
+          <Callout className="p-0 bg-black m-0" >
+            <View >
+              <Text >{coord.name}</Text>
+              <Text style={styles.calloutDescription}>{coord.description}</Text>
+            </View>
+          </Callout>
+        </Marker>
       ))}
     </MapView>
   );
