@@ -1,11 +1,11 @@
-import { View, StyleSheet, Modal, Text, Button } from 'react-native';
+import { View, Modal, Text, Button } from "react-native";
 import { useEffect, useState } from "react";
-
 import axios from "axios";
 
 //Interface
-import { Data } from "@/types/interface";
 import { Coordinate } from "@/types/interface";
+import { Data } from "@/types/interface";
+
 //Components
 import MapsComponent from "@/components/Map";
 import Footer from "@/components/Footer";
@@ -33,7 +33,10 @@ const Home = () => {
     <>
       {coordinates && (
         <>
-          <Header pois_count={state?.pois_count} onPress={()=> setModalVisible(!modalVisible)}/>
+          <Header
+            pois_count={state?.pois_count}
+            onPress={() => setModalVisible(!modalVisible)}
+          />
           <MapsComponent
             coordinates={coordinates}
             marker={state?.pois}
@@ -46,9 +49,11 @@ const Home = () => {
             visible={modalVisible}
             onRequestClose={() => setModalVisible(false)}
           >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Filtrar Marcadores</Text>
+            <View className="flex-1 items-center justify-center bg-opacity-50">
+              <View className="'w-4/5 bg-white p-5 rounded-lg shadow-lg'">
+                <Text className={"text-xl font-bold mb-2"}>
+                  Filtrar Marcadores
+                </Text>
                 <Text>Populares</Text>
                 <Text>Dentro de la zona</Text>
                 <Button title="Cerrar" onPress={() => setModalVisible(false)} />
@@ -60,35 +65,5 @@ const Home = () => {
     </>
   );
 };
-
-
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: '80%',
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-});
 
 export default Home;

@@ -1,35 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import MapView, { Callout, Marker, Polygon, Polyline } from "react-native-maps";
 import { isPointInPolygon } from "geolib";
 import { MapProps } from "@/types/interface";
 
-const styles = StyleSheet.create({
-  maps: {
-    width: "100%",
-    height: "80%",
-  },
-  callout: {
-    width: 150, // Ajusta el ancho del Callout
-    backgroundColor: "white", // Fondo blanco
-    borderRadius: 8, // Bordes redondeados
-    padding: 10, // Espaciado interno
-  },
-  calloutContent: {
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  calloutTitle: {
-    fontWeight: "bold",
-  },
-  calloutLikes: {
-    marginTop: 5,
-    color: "gray",
-  },
-  calloutDescription: {
-    marginTop: 5,
-    color: "black",
-  },
-});
 
 const MapComponent = ({ coordinates, marker, event }: MapProps) => {
   const calculateBounds = (coordinates: any) => {
@@ -80,7 +53,7 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
 
   return (
     <MapView
-      style={styles.maps}
+      style={{height: '80%'}}
       initialRegion={{
         latitude: center.latitude,
         longitude: center.longitude,
@@ -104,7 +77,7 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
         fillColor="rgba(255, 0, 0, 0.5)" // Color de fondo con transparencia
         strokeWidth={0}
       />
-      
+
       <Polyline coordinates={coordinates} strokeColor="black" strokeWidth={1} />
       {markersOutsidePolygon.map((coord: any, index: number) => (
         <Marker
@@ -114,10 +87,13 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
           description={`${coord.description}`}
           image={coord.category.marker.url}
         >
-          <Callout className="p-0 bg-black m-0" >
-            <View >
-              <Text >{coord.name}</Text>
-              <Text style={styles.calloutDescription}>{coord.description}</Text>
+          <Callout
+            tooltip={true}
+            className="bg-black w-auto h-auto" 
+          >
+            <View className="p-5">
+              <Text className="m-t-5 text-white">{coord.name}</Text>
+              <Text className="m-t-5 text-white">{coord.description}</Text>
             </View>
           </Callout>
         </Marker>
