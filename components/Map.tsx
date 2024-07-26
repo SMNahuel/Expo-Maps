@@ -1,30 +1,18 @@
+import React, { useState } from "react";
 import { Text, View } from "react-native";
-import MapView, { Callout, Marker, Polygon, Polyline } from "react-native-maps";
-import { isPointInPolygon } from "geolib";
-import { MapProps } from "@/types/interface";
+import MapView, {
+  Callout,
+  Marker,
+  Polygon,
+  Polyline,
+  Region,
+} from "react-native-maps";
 
+import { MapProps } from "@/types/interface";
+import { calculateBounds, getMarkersInRegion } from "@/utils";
 
 const MapComponent = ({ coordinates, marker, event }: MapProps) => {
-  const calculateBounds = (coordinates: any) => {
-    let minLat = coordinates[0].latitude;
-    let maxLat = coordinates[0].latitude;
-    let minLon = coordinates[0].longitude;
-    let maxLon = coordinates[0].longitude;
-
-    coordinates.forEach((coord: any) => {
-      if (coord.latitude < minLat) minLat = coord.latitude;
-      if (coord.latitude > maxLat) maxLat = coord.latitude;
-      if (coord.longitude < minLon) minLon = coord.longitude;
-      if (coord.longitude > maxLon) maxLon = coord.longitude;
-    });
-
-    return {
-      minLat,
-      maxLat,
-      minLon,
-      maxLon,
-    };
-  };
+  const [region, setRegion] = useState<Region | null>(null);
 
   const bounds = calculateBounds(coordinates);
 
@@ -36,24 +24,27 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
   const latitudeDelta = bounds.maxLat - bounds.minLat;
   const longitudeDelta = bounds.maxLon - bounds.minLon;
 
-  const getMarkersOutsidePolygon = (polygon: any, points: any) => {
-    return points.filter((point: any) => isPointInPolygon(point, polygon));
-  };
-
-  // Marker dentro del poligon
-  const markersOutsidePolygon = getMarkersOutsidePolygon(
-    coordinates.map((coord) => ({
-      latitude: coord.latitude,
-      longitude: coord.longitude,
-    })),
-    marker.map((marker: any) => marker)
+  // Ordenar marcadores por likes_count
+  const sortedMarkers = marker.sort(
+    (a: any, b: any) => b.likes_count - a.likes_count
   );
 
-  const popularMarkers = marker.filter((item: any) => item.likes_count > 0);
+  const markersToShow = region
+    ? getMarkersInRegion(sortedMarkers, region)
+    : sortedMarkers;
+
+  // Limit initial markers to 10, show more as zoom level increases
+  const initialMarkersLimit = 10;
+  const zoomFactor = 0.05; // Smaller value = more markers shown at each zoom level
+  const currentMarkersLimit = region
+    ? initialMarkersLimit + Math.floor((1 - region.latitudeDelta) / zoomFactor)
+    : initialMarkersLimit;
+
+  const limitedMarkersToShow = markersToShow.slice(0, currentMarkersLimit);
 
   return (
     <MapView
-      style={{height: '80%'}}
+      style={{ height: "80%" }}
       initialRegion={{
         latitude: center.latitude,
         longitude: center.longitude,
@@ -71,6 +62,7 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
         },
       ]}
       provider={"google"}
+      onRegionChangeComplete={(region) => setRegion(region)}
     >
       <Polygon
         coordinates={coordinates}
@@ -79,21 +71,23 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
       />
 
       <Polyline coordinates={coordinates} strokeColor="black" strokeWidth={1} />
-      {markersOutsidePolygon.map((coord: any, index: number) => (
+
+      {limitedMarkersToShow.map((coord: any) => (
         <Marker
           key={coord.id}
-          coordinate={coord}
+          coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
           icon={coord.category.icon}
           description={`${coord.description}`}
           image={coord.category.marker.url}
         >
-          <Callout
-            tooltip={true}
-            className="bg-black w-auto h-auto" 
-          >
-            <View className="p-5">
-              <Text className="m-t-5 text-white">{coord.name}</Text>
-              <Text className="m-t-5 text-white">{coord.description}</Text>
+          <Callout tooltip={true}>
+            <View
+              style={{ padding: 5, backgroundColor: "black", borderRadius: 5 }}
+            >
+              <Text style={{ marginTop: 5, color: "white" }}>{coord.name}</Text>
+              <Text style={{ marginTop: 5, color: "white" }}>
+                {coord.description}
+              </Text>
             </View>
           </Callout>
         </Marker>

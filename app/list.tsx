@@ -7,22 +7,14 @@ import {
   FlatList,
   Image,
   Modal,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 
 // Components
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ModalPois from "@/components/ModalPois";
-
-type ItemProps = {
-  id: number;
-  name: string;
-  image: {
-    url: string;
-  };
-  likes_count: number;
-};
+import { LikeIcon } from "@/components/Icon";
 
 type Item = {
   id: number;
@@ -33,18 +25,28 @@ type Item = {
   likes_count: number;
 };
 const Item = ({ item, onPress, onSelect }: any) => (
-  <TouchableOpacity onPress={() => onPress(item)}>
-    <View style={styles.containerItem}>
-      <Image
-        style={styles.imageItem}
-        source={{
-          uri: item.image.url,
-        }}
-      />
-      <Text style={styles.textItem}>{item.name}</Text>
-      <Text style={styles.textItem}>{item.likes_count}</Text>
+  <Pressable onPress={() => onPress(item)}>
+    <View className="flex-row bg-white border-b-2 border-b-slate-50 justify-between items-center">
+      <View className="flex-row justify-center items-center">
+        <Image
+          className="w-20 h-20"
+          source={{
+            uri: item.image.url,
+          }}
+        />
+        <Text className={`ml-1 text-center text-[#3a3a3a] font-bold`}>
+          {item.name}
+        </Text>
+      </View>
+
+      <View className="flex-row justify-center items-center mr-3">
+        <Text className={`text-center text-[#c1c1c1] font-bold`}>
+          {item.likes_count}
+        </Text>
+        <LikeIcon />
+      </View>
     </View>
-  </TouchableOpacity>
+  </Pressable>
 );
 
 export default function HomeScreen() {
@@ -116,6 +118,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     height: "80%",
+    backgroundColor: "white",
   },
   text: {
     letterSpacing: 0.69,
@@ -135,16 +138,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  textItem: {
-    width: 110,
-    height: 16,
-    fontFamily: "Roboto",
-    fontSize: 14,
-    fontWeight: "500",
-    fontStyle: "normal",
-    letterSpacing: 0.26,
-    color: "#3a3a3a",
-  },
+
   imageItem: {
     width: 100,
     height: 100,

@@ -1,3 +1,5 @@
+import { ImageURISource } from "react-native";
+
 export interface Coordinate {
   latitude: number;
   longitude: number;
@@ -33,8 +35,13 @@ export interface CategoryIcon {
   url: string;
 }
 
+export interface Marker {
+  url: ImageURISource;
+}
+
 export interface Category {
   icon: CategoryIcon;
+  marker: Marker;
 }
 
 export interface Audio {
