@@ -67,3 +67,7 @@ export interface Site {
 export interface DinamicIconProps {
   url: string;
 }
+
+export interface MarkerIconProps{
+  color: string
+}

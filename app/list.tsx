@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -11,10 +10,14 @@ import {
 } from "react-native";
 
 // Components
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 import ModalPois from "@/components/ModalPois";
-import { LikeIcon } from "@/components/Icon";
+import { DotIcon, LikeIcon } from "@/components/Icon";
+
+//Store
+import useStore from "../store/index";
+import { styled } from "nativewind";
+
+const StyledPressable = styled(Pressable);
 
 type Item = {
   id: number;
@@ -24,8 +27,11 @@ type Item = {
   };
   likes_count: number;
 };
-const Item = ({ item, onPress, onSelect }: any) => (
-  <Pressable onPress={() => onPress(item)}>
+const Item = ({ item, onPress }: any) => (
+  <StyledPressable
+    onPress={() => onPress(item)}
+    className={`active:opacity-80 active:bg-black`}
+  >
     <View className="flex-row bg-white border-b-2 border-b-slate-50 justify-between items-center">
       <View className="flex-row justify-center items-center">
         <Image
@@ -46,28 +52,13 @@ const Item = ({ item, onPress, onSelect }: any) => (
         <LikeIcon />
       </View>
     </View>
-  </Pressable>
+  </StyledPressable>
 );
 
 export default function HomeScreen() {
-  const [pois, setPois] = useState({
-    name: "",
-    pois_count: null,
-    pois: [],
-  });
+  const { pois } = useStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedSite, setSelectedSite] = useState(null);
-
-  useEffect(() => {
-    const init = async () => {
-      const { data } = await axios.get(
-        "https://cityme-services.prepro.site/app_dev.php/api/districts/2"
-      );
-
-      setPois(data);
-    };
-    init();
-  }, []);
 
   const onPress = (item: any) => {
     setSelectedSite(item);
@@ -76,10 +67,19 @@ export default function HomeScreen() {
 
   return (
     <>
+      <View className="h-10 w-full bg-black flex-row justify-between pl-2 pr-2">
+        <View className="flex-row justify-center items-center">
+          <Text className="text-[#cccccc]">
+            Ordenar: <Text className="text-[#cccccc] font-bold ">Popularidad</Text>
+          </Text>
+        </View>
+        <Pressable className="flex-row justify-center items-center">
+          <DotIcon />
+        </Pressable>
+      </View>
       {pois && (
         <>
-          <Header pois_count={pois.pois_count} />
-          <View style={styles.container}>
+          <View className="flex-1 w-full bg-white">
             <FlatList
               data={pois.pois}
               renderItem={({ item }: any) => {
@@ -95,7 +95,6 @@ export default function HomeScreen() {
               keyExtractor={(item: any) => item.id}
             />
           </View>
-          <Footer dest="/" text="MOSTRAR EN EL MAPA" />
         </>
       )}
       <Modal

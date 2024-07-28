@@ -1,29 +1,48 @@
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
-
+import { View, Text, Pressable } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { BackIcon, CalendarIcon, FilterIcon, NavigationIcon } from "./Icon";
 
-const Header = ({ pois_count, onPress }: any) => {
+//Components
+import {
+  BackIcon,
+  CalendarIcon,
+  FilterIcon,
+  MarkerIcon,
+  NavigationIcon,
+} from "./Icon";
+
+//Store
+import useStore from "../store/index";
+
+const Header = () => {
+  const { pois } = useStore();
+
   return (
     <GestureHandlerRootView style={{ height: "15%" }}>
-      <View style={styles.containerFooter}>
-        <View style={styles.rowContainerLeft}>
+      <View className="flex-1 flex-row justify-between items-end bg-[#cccccc] pt-1 pb-1 pl-2 pr-2">
+        <View className="flex-row justify-between items-center w-30">
           <BackIcon />
-          <Text style={{ color: "white" }}>MADRID</Text>
+          <Text className="font-['TradeGothic'] text-[#666666] text-xl ml-5">
+            MADRID
+          </Text>
         </View>
-        <View style={styles.rowContainerRight}>
+        <View className="flex-row justify-end items-center w-30">
           <CalendarIcon />
           <NavigationIcon />
         </View>
       </View>
-      <View style={styles.container}>
-        <Text style={{ color: "white" }}>LATINA - OPERA</Text>
-        <View style={styles.rowElement}>
-          <Text style={{ color: "white" }}>{pois_count}</Text>
-          <View style={styles.itemRow}>
-            <TouchableOpacity onPress={onPress}>
+      <View className="flex-row justify-between items-center bg-[#676767] pl-2 pr-1 pt-2 pb-2">
+        <Text className="font-['TradeGothic'] text-xl text-white">LATINA - OPERA</Text>
+        <View className="flex-row justify-center items-center">
+          <View className="flex-row mr-3 justify-center items-center">
+            <MarkerIcon color={"white"} />
+            <Text className="font-['TradeGothic'] text-center text-white  text-lg">
+              {pois.pois_count}
+            </Text>
+          </View>
+          <View>
+            <Pressable onPress={() => console.log("")}>
               <FilterIcon />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -31,48 +50,4 @@ const Header = ({ pois_count, onPress }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#676767",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  filterButton: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: "white",
-    elevation: 3,
-  },
-  containerFooter: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-    backgroundColor: "#cccccc",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  rowContainerLeft: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "30%",
-  },
-  rowContainerRight: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    width: "30%",
-  },
-  rowElement: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "20%",
-  },
-  itemRow: {},
-});
 export default Header;

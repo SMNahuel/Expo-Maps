@@ -1,81 +1,38 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet,  } from "react-native";
-import { router } from "expo-router";
-import {
-  GestureHandlerRootView,
-  TouchableHighlight,
-} from "react-native-gesture-handler";
-import { MenuIcon } from "./Icon";
+import React from "react";
+import { View, Text, Pressable } from "react-native";
+import { Link, router, usePathname } from "expo-router";
+import { styled } from "nativewind";
 
-const Footer = ({dest, text} : any) => {
+//Components
+import { MapIcon, MenuIcon } from "./Icon";
+
+const StyledPressable = styled(Pressable);
+const Footer = () => {
+  const link = usePathname();
+
   const toggleModal = () => {
-    router.replace(dest);
+    if (link === "/") {
+      router.replace("/list");
+    } else {
+      router.replace("/");
+    }
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 ,height: '5%'}}>
-      <View style={styles.container}>
-        <Text style={{ color: "white" }}>{text}</Text>
-        <TouchableHighlight onPress={toggleModal}>
-          <MenuIcon />
-        </TouchableHighlight>
-      </View>
-      
-    </GestureHandlerRootView>
+    <View className="flex-row justify-between pt-2 pl-2 pr-4 items-center h-12 bg-[#676767]">
+      <Text className=" text-xl font-['TradeGothic'] text-[#cccccc]">
+        {link === "/" ? "MOSTRAR EN LISTA" : "MOSTRAR EN EL MAPA"}
+      </Text>
+      <Link href={link !== "/" ? "/" : "/list"} asChild>
+        <StyledPressable
+          onPress={toggleModal}
+          className="active:bg-gray active:border-white/50"
+        >
+          {link !== "/" ? <MapIcon /> : <MenuIcon />}
+        </StyledPressable>
+      </Link>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex :1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#676767",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  containerFooter: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-    backgroundColor: "#cccccc",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  rowContainerLeft: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "30%",
-  },
-  rowContainerRight: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    width: "30%",
-  },
-  modal: {
-    justifyContent: "flex-end",
-  },
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    flex: 1,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  listItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-});
 
 export default Footer;

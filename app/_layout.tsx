@@ -1,52 +1,41 @@
 import { useEffect } from "react";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { View } from "react-native";
 
 import "react-native-reanimated";
 
-// Hooks
-import { useColorScheme } from "@/hooks/useColorScheme";
+//Components
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+
+//Store
+import useStore from "../store/index";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+  const { init } = useStore();
+  const [load, error] = useFonts({
+    "TradeGothic": require("../assets/fonts/TradeGothicLTStd-BdCn20.otf"),
   });
-
+  
   useEffect(() => {
-    if (loaded) {
+    init();
+    if (load) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [load]);
 
-  if (!loaded) {
+  if (!load) {
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="index"
-          options={{ animation: "slide_from_bottom" }}
-        />
-        <Stack.Screen
-          name="list"
-          options={{
-            animation: "slide_from_bottom",
-            header: () => <View>Hola</View>,
-          }}
-        />
-      </Stack>
-    </ThemeProvider>
+    <>
+      <Header />
+      <Stack screenOptions={{ headerShown: false}} />
+      <Footer />
+    </>
   );
 }

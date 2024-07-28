@@ -86,14 +86,14 @@ const ModalPois: React.FC<ModalPoisProps> = ({
         <View className="flex-row justify-between items-center p-2 h-2/2">
           <View className="flex-row items-center justify-center mt-2">
             <DinamicIcon url={selectedSite.category.icon.url} />
-            <Text className={`font-bold text-lg ml-1 text-[#999999]`}>
+            <Text className={`font-bold text-sm ml-1 text-[#999999] w-60`}>
               {selectedSite.name.toUpperCase()}
             </Text>
           </View>
 
           <Pressable
             onPress={handleClose}
-            className="justify-center items-center text-center "
+            className={`active:opacity-80 `}
           >
             <CloseIcon />
           </Pressable>

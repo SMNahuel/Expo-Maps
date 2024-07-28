@@ -1,48 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Modal, Text, Button, StyleSheet } from "react-native";
-import axios from "axios";
-
-// Interface
-import { Coordinate, Data } from "@/types/interface";
 
 // Components
 import MapsComponent from "@/components/Map";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+
+//Store
+import useStore from "../store/index";
 
 const Home = () => {
-  const [state, setState] = useState<Data>();
   const [modalVisible, setModalVisible] = useState(false);
+  const { pois, loading, coordinates } = useStore();
 
-  useEffect(() => {
-    axios
-      .get("https://cityme-services.prepro.site/app_dev.php/api/districts/2")
-      .then(({ data }) => {
-        setState(data);
-      });
-  }, []);
-
-  const coordinates: Coordinate[] | undefined = state?.coordinates
-    .split(" ")
-    .map((coord: String) => {
-      const [longitude, latitude, _] = coord.split(",").map(Number);
-      return { longitude, latitude };
-    });
 
   return (
     <>
-      {coordinates && (
+      {!loading ? (
         <>
-          <Header
-            pois_count={state?.pois_count}
-            onPress={() => setModalVisible(!modalVisible)}
-          />
           <MapsComponent
             coordinates={coordinates}
-            marker={state?.pois}
-            event={state?.events}
+            marker={pois?.pois}
+            event={pois?.events}
           />
-          <Footer dest={"/list"} text="MOSTRAR EN LISTADO" />
+
           <Modal
             animationType="slide"
             transparent={true}
@@ -59,7 +38,9 @@ const Home = () => {
             </View>
           </Modal>
         </>
-      )}
+      )
+        : <Text>Cargando</Text>
+    }
     </>
   );
 };
@@ -69,10 +50,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    width: '80%',
+    width: "80%",
     backgroundColor: "white",
     padding: 20,
     borderRadius: 10,

@@ -2,8 +2,9 @@ import Entypo from "@expo/vector-icons/Entypo";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
-import { DinamicIconProps } from "@/types/interface";
+import { DinamicIconProps, MarkerIconProps } from "@/types/interface";
 import { Image } from "react-native";
 
 export const MenuIcon = () => {
@@ -54,5 +55,19 @@ export const PauseIcon = () => {
 };
 
 export const LikeIcon = () => {
-  return <Entypo name="heart" size={18} color="#c1c1c1" style={{marginLeft: 3}}/>;
+  return (
+    <Entypo name="heart" size={18} color="#c1c1c1" style={{ marginLeft: 3 }} />
+  );
+};
+
+export const MarkerIcon = ({ color }: MarkerIconProps) => {
+  return <Entypo name="location-pin" size={24} color={color} />;
+};
+
+export const MapIcon = () => {
+  return <FontAwesome name="map" size={24} color="#cccccc" />;
+};
+
+export const DotIcon = () => {
+  return <Entypo name="dots-three-horizontal" size={24} color="white" />;
 };

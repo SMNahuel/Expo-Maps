@@ -9,6 +9,9 @@ module.exports = {
     extend: {},
     color: {
       textColor: "#888888"
+    },
+    fontFamily:{
+      TradeGothic: ["'TradeGothic'"]
     }
   },
   plugins: [],

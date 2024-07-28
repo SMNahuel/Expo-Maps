@@ -10,6 +10,7 @@ import MapView, {
 
 import { MapProps } from "@/types/interface";
 import { calculateBounds, getMarkersInRegion } from "@/utils";
+import { MarkerIcon } from "./Icon";
 
 const MapComponent = ({ coordinates, marker, event }: MapProps) => {
   const [region, setRegion] = useState<Region | null>(null);
@@ -33,9 +34,8 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
     ? getMarkersInRegion(sortedMarkers, region)
     : sortedMarkers;
 
-  // Limit initial markers to 10, show more as zoom level increases
   const initialMarkersLimit = 10;
-  const zoomFactor = 0.05; // Smaller value = more markers shown at each zoom level
+  const zoomFactor = 0.05;
   const currentMarkersLimit = region
     ? initialMarkersLimit + Math.floor((1 - region.latitudeDelta) / zoomFactor)
     : initialMarkersLimit;
@@ -44,7 +44,7 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
 
   return (
     <MapView
-      style={{ height: "80%" }}
+      style={{ height: "100%" }}
       initialRegion={{
         latitude: center.latitude,
         longitude: center.longitude,
@@ -70,23 +70,44 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
         strokeWidth={0}
       />
 
-      <Polyline coordinates={coordinates} strokeColor="black" strokeWidth={1} />
+      <Polyline coordinates={coordinates} strokeColor="white" strokeWidth={2} />
 
       {limitedMarkersToShow.map((coord: any) => (
         <Marker
           key={coord.id}
           coordinate={{ latitude: coord.latitude, longitude: coord.longitude }}
-          icon={coord.category.icon}
           description={`${coord.description}`}
           image={coord.category.marker.url}
         >
-          <Callout tooltip={true}>
-            <View
-              style={{ padding: 5, backgroundColor: "black", borderRadius: 5 }}
-            >
-              <Text style={{ marginTop: 5, color: "white" }}>{coord.name}</Text>
-              <Text style={{ marginTop: 5, color: "white" }}>
+          <Callout>
+            <View style={{ borderRadius: 5 }}>
+              <Text style={{ marginTop: 5 }} className="text-center">{coord.name}</Text>
+
+              <Text style={{ marginTop: 5 }}>
+                <MarkerIcon />
                 {coord.description}
+              </Text>
+            </View>
+          </Callout>
+        </Marker>
+      ))}
+
+      {event.map((evt: any) => (
+        <Marker
+          key={evt.id}
+          coordinate={{
+            latitude: Number(evt.latitude),
+            longitude: Number(evt.longitude),
+          }}
+          description={`${evt.description}`}
+          image={evt.category.icon.url}
+        >
+          <Callout>
+            <View style={{ borderRadius: 5 }}>
+              <Text style={{ marginTop: 5 }} className="text-center">{evt.title}</Text>
+              <Text style={{ marginTop: 5 }}>
+                <MarkerIcon />
+                {evt.address.slice(0, 20)}
               </Text>
             </View>
           </Callout>
