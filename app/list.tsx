@@ -5,13 +5,13 @@ import {
   Text,
   FlatList,
   Image,
-  Modal,
   Pressable,
 } from "react-native";
 
 // Components
 import ModalPois from "@/components/ModalPois";
 import { DotIcon, LikeIcon } from "@/components/Icon";
+import Modal from "react-native-modal";
 
 //Store
 import useStore from "../store/index";
@@ -70,7 +70,8 @@ export default function HomeScreen() {
       <View className="h-10 w-full bg-black flex-row justify-between pl-2 pr-2">
         <View className="flex-row justify-center items-center">
           <Text className="text-[#cccccc]">
-            Ordenar: <Text className="text-[#cccccc] font-bold ">Popularidad</Text>
+            Ordenar:{" "}
+            <Text className="text-[#cccccc] font-bold ">Popularidad</Text>
           </Text>
         </View>
         <Pressable className="flex-row justify-center items-center">
@@ -97,74 +98,15 @@ export default function HomeScreen() {
           </View>
         </>
       )}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
+      <Modal isVisible={modalVisible}>
         {selectedSite && (
           <ModalPois
             onRequestClose={() => setModalVisible(false)}
             selectedSite={selectedSite}
+            
           />
         )}
       </Modal>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    height: "80%",
-    backgroundColor: "white",
-  },
-  text: {
-    letterSpacing: 0.69,
-    fontSize: 22,
-    fontWeight: "bold",
-    fontStyle: "normal",
-    color: "white",
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  containerItem: {
-    backgroundColor: "white",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  imageItem: {
-    width: 100,
-    height: 100,
-  },
-  containerFooter: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modal: {
-    justifyContent: "flex-end",
-  },
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    flex: 1,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  listItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-});

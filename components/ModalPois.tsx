@@ -1,4 +1,12 @@
-import { Text, View, Button, Image, Pressable, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  Button,
+  Image,
+  Pressable,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import Slider from "@react-native-community/slider";
 import MapView, { Callout, Marker } from "react-native-maps";
 import React, { useEffect, useState } from "react";
@@ -11,6 +19,9 @@ import { CloseIcon, DinamicIcon, LikeIcon, PauseIcon, PlayIcon } from "./Icon";
 //Types
 import { Site, ImageInterface } from "@/types/interface";
 import { Colors } from "@/constants/Colors";
+
+import { GestureHandlerRefContext } from "@react-navigation/stack";
+
 interface ModalPoisProps {
   onRequestClose: () => void;
   selectedSite: Site;
@@ -81,20 +92,19 @@ const ModalPois: React.FC<ModalPoisProps> = ({
   };
 
   return (
-    <View style={styles.modalBackground}>
-      <View className="w-11/12 h-5/6 bg-white shadow-lg">
+    <View className="h-full flex-1">
+      <View className="w-full h-full bg-white shadow-lg">
         <View className="flex-row justify-between items-center p-2 h-2/2">
           <View className="flex-row items-center justify-center mt-2">
             <DinamicIcon url={selectedSite.category.icon.url} />
-            <Text className={`font-bold text-sm ml-1 text-[#999999] w-60`}>
+            <Text
+              className={`text-sm ml-1 text-[#999999] font-['TradeGothic'] w-60`}
+            >
               {selectedSite.name.toUpperCase()}
             </Text>
           </View>
 
-          <Pressable
-            onPress={handleClose}
-            className={`active:opacity-80 `}
-          >
+          <Pressable onPress={handleClose} className={`active:opacity-80 `}>
             <CloseIcon />
           </Pressable>
         </View>
@@ -167,7 +177,7 @@ const ModalPois: React.FC<ModalPoisProps> = ({
         </View>
         <View className="p-4">
           <MapView
-            className="w-full h-3/6"
+            className="w-full h-20"
             initialRegion={{
               latitude: selectedSite.latitude,
               longitude: selectedSite.longitude,
@@ -201,18 +211,35 @@ const ModalPois: React.FC<ModalPoisProps> = ({
             </Marker>
           </MapView>
         </View>
+        <View className="flex-row justify-between pl-4 pr-4 w-full ">
+          <View className="w-2/4">
+            <Text className="text-center text-lg font-['TradeGothic'] border-b-4 border-[#f35412]">
+              Eventos
+            </Text>
+          </View>
+          <View className="w-2/4">
+            <Text className="text-center text-lg font-['TradeGothic'] text-[#cccccc]">
+              Actualidad
+            </Text>
+          </View>
+        </View>
+        <View>
+          <View className="flex-row items-center">
+            <View className="w-16 h-16 bg-[#f35412] rounded-full justify-center items-center m-2">
+              <Text className="text-white text-lg font-['TradeGothic']">
+                07
+              </Text>
+              <Text className="font-['TradeGothic'] text-white">ABR</Text>
+            </View>
+            <View>
+              <Text className="font-['TradeGothic']">Metronomy en Concierto</Text>
+              <Text className="font-['TradeGothic'] text-[#888888]">7 de abril a las 22:00</Text>
+            </View>
+          </View>
+        </View>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  modalBackground: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
-  },
-});
 
 export default ModalPois;
