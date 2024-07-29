@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import MapView, {
   Callout,
   Marker,
+  PROVIDER_GOOGLE,
   Polygon,
   Polyline,
   Region,
@@ -61,8 +62,8 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
           ],
         },
       ]}
-      provider={"google"}
       onRegionChangeComplete={(region) => setRegion(region)}
+      provider={PROVIDER_GOOGLE}
     >
       <Polygon
         coordinates={coordinates}
@@ -81,7 +82,9 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
         >
           <Callout>
             <View style={{ borderRadius: 5 }}>
-              <Text style={{ marginTop: 5 }} className="text-center">{coord.name}</Text>
+              <Text style={{ marginTop: 5 }} className="text-center">
+                {coord.name}
+              </Text>
 
               <Text style={{ marginTop: 5 }}>
                 <MarkerIcon />
@@ -104,7 +107,9 @@ const MapComponent = ({ coordinates, marker, event }: MapProps) => {
         >
           <Callout>
             <View style={{ borderRadius: 5 }}>
-              <Text style={{ marginTop: 5 }} className="text-center">{evt.title}</Text>
+              <Text style={{ marginTop: 5 }} className="text-center">
+                {evt.title}
+              </Text>
               <Text style={{ marginTop: 5 }}>
                 <MarkerIcon />
                 {evt.address.slice(0, 20)}

@@ -1,6 +1,6 @@
 import { Coordinate } from "@/types/interface";
 import axios from "axios";
-import create from "zustand";
+import {create} from "zustand";
 
 // Define la interfaz para un punto de interés (POI)
 

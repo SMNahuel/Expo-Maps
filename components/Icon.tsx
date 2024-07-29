@@ -60,7 +60,7 @@ export const LikeIcon = () => {
   );
 };
 
-export const MarkerIcon = ({ color }: MarkerIconProps) => {
+export const MarkerIcon = ({ color = 'white' }: MarkerIconProps) => {
   return <Entypo name="location-pin" size={24} color={color} />;
 };
 

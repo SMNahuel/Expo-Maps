@@ -69,5 +69,5 @@ export interface DinamicIconProps {
 }
 
 export interface MarkerIconProps{
-  color: string
+  color?: string
 }

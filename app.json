@@ -19,7 +19,13 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "config" :{
+        "googleMaps": {
+          "apiKey" : "AIzaSyCtWl3pdOWgdVNBRcfkztpkIsSyzGGV7v8"
+        }
+      },
+      "package": "com.eameo.challenge"
     },
     "web": {
       "bundler": "metro",
@@ -31,13 +37,22 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/TradeGothicLTStd-BdCn20.otf"]
+          "fonts": [
+            "./assets/fonts/TradeGothicLTStd-BdCn20.otf"
+          ]
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
     },
-    "config": {}
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "fa57d138-e486-48d0-ba9d-80a9ec0872d2"
+      }
+    }
   }
 }
